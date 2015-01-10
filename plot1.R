@@ -1,0 +1,12 @@
+unzip("exdata-data-household_power_consumption.zip")
+data <- read.table("household_power_consumption.txt", header=TRUE, sep=";")
+library(dplyr)
+data <- tbl_df(data)
+data$Date=as.Date.factor(data$Date, "%d/%m/%Y")
+dates <- filter(data, Date == "2007-02-01"| Date=="2007-02-02")
+dates <- mutate(dates, Global_active_power = as.numeric(as.character(dates$Global_active_power)))
+ dev.new(width=480, height=480)
+hist(dates$Global_active_power, col="red", breaks=12, xlab="Global Active Power (kilowattz)",
+     main="Global Active Power")
+dev.copy(png, "plot1.png")
+dev.off()
